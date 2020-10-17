@@ -1,7 +1,9 @@
-from django.conf.urls import url,include
 from django.contrib import admin
+from django.urls import include, url
+from users import views as user_views
 
 urlpatterns = [
-    url('', include('instaclone.urls')),
-    url(r'^admin/', admin.site.urls),
+    url('admin/', admin.site.urls),
+    url('register/', user_views.register, name='register'),
+    url('', include('blog.urls')),
 ]
