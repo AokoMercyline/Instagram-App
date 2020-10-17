@@ -8,5 +8,8 @@ def index(request):
     context = {
         'posts': Post.objects.all()
     }
-    return render(request, 'instaclone/index.html', context)
+    return render(request, 'index.html', context)
+
+def register(request):
+    return render(request, 'users/register.html')
 
