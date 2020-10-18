@@ -13,3 +13,6 @@ def index(request):
 def register(request):
     return render(request, 'users/register.html')
 
+def register(request):
+    return render(request, 'users/login.html')
+
