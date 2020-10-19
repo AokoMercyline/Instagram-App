@@ -1,7 +1,9 @@
 from django.urls import path
+from .views import PostListView
 from . import views
 
+
 urlpatterns = [
-    path('', views.index, name='instaclone-index'),
+    path('', PostListView.as_view(), name='instaclone-index'),
     
-]
+]      

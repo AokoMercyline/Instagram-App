@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/section.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Playball&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
     {% if title %}
@@ -28,7 +28,7 @@
         <div class="container">
           <a class="navbar-brand mr-4" style="font-family: 'Lobster Two', cursive;
           font-family: 'Playball', cursive;font-size: 30px;
-          " href="{% url 'instaclone-index' %}">Instagram</a>
+          " href="{% url 'instaclone-index' %}"><i class="fa fa-instagram"></i>Instagram</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -38,8 +38,10 @@
               
             </div>
             <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+              <input style="border-radius: 70px;" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="fa fa-search"></i>
+                
+              </button>
             </form>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
