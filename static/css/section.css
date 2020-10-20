@@ -1,6 +1,6 @@
 body {
-    background: #FAFAFA;
-    color: #333333;
+    background: hsl(0, 0%, 3%);
+    color: #0a0a0a;
     margin-top: 5rem;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -19,7 +19,7 @@ body {
     color: #FFFFFF;
   }
   .site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
+    font-weight: 900;
   }
   .content-section {
     background: #FFFFFF;
@@ -32,15 +32,15 @@ body {
     color: #444444;
   }
   a.article-title:hover {
-    color: #428BCA;
+    color: #59ca42;
     text-decoration: none;
   }
   .article-content {
     white-space: pre-line;
   }
   .article-img {
-    height: 65px;
-    width: 65px;
+    height: 55px;
+    width: 55px;
     margin-right: 16px;
   }
   .article-metadata {
