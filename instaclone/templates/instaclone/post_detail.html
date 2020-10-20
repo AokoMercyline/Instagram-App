@@ -1,5 +1,6 @@
 
 {% extends "instaclone/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
    
         <article class="media content-section">
@@ -18,6 +19,21 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
+            <p>Followers: 0</p> 
+            <p>Following: 0</p>
+          </div>
+          
+          <div class="row">
+            <div class="col">
+              <form method="post" style="margin-top: 1.3em;">
+                {% csrf_token %}
+                  {{ comment_form | crispy }}
+                  
+                  <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+         </form>
+        
+              
+            </div>
           </div>
         </article>
     

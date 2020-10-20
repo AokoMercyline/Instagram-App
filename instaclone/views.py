@@ -1,18 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic  import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from django.views.generic  import ListView,DetailView, CreateView, UpdateView, DeleteView
+from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
+from django.contrib.auth.models import User
+
 
 
 # Create your views here.
-def index(request):
-    context = {
-        'posts': Post.objects.all()
-    }
+# def index(request):
+#     context = {
+#         'posts': Post.objects.all()
+#     }
    
-    return render(request, 'index.html', context)
+#     return render(request, 'index.html', context)
 
 class PostListView(ListView):
     model = Post
@@ -24,9 +26,18 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     
+    
+class PostComment(Comment):
+    model = Comment
+    fields = ['body']
+    
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
 
     def form_valid(self,form):
         form.instance.author = self.request.user
@@ -69,15 +80,16 @@ def search_results(request):
         search_term = request.GET.get("username")
         searched_users = User.objects.filter(username__icontains = search_term)
         message = f"{search_term}"
+        print(searched_users)
         profile_pic = User.objects.all()
-        return render(request, 'istagram/search.html', {'message':message, 'results':searched_users, 'profile_pic':profile_pic})
+        return render(request, 'instaclone/search.html', {'message':message, 'results':searched_users, 'profile_pic':profile_pic})
     else:
         message = "You haven't searched for any term"
-        return render(request, 'istagram/search.html', {'message':message})
+        return render(request, 'instaclone/search.html', {'message':message})
 
 def post_detail(request, slug):
     template_name = 'post_detail.html'
-    post = get_object_or_404(Post, slug=slug)
+    # post = get_object_or_404(Post, slug=slug)
     comments = post.comments.filter(active=True) #retrieves all the approved comments from the database.
     new_comment = None
     # Comment posted

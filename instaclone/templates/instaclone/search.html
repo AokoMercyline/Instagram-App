@@ -1,6 +1,4 @@
 {%extends 'instaclone/base.html'%}
-{% load staticfiles%}
-{% load bootstrap4 %}
 
 {% block content %}
 {{block.super}}
@@ -22,13 +20,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <img src="{{ post.author.profile.image.url}}" alt=""
+                        <img src="{{ user_profile.profile.image.url}}" alt=""
                              class="rounded-circle border ml-3 mt-2  mr-3" width="55" height="55">
                     </div>
-                    <div class="col-md-6 mt-2">
-                        <span><strong><a href="{% url 'user_profile' user_profile.user.username  %}">{{user_profile.user.username}}</a></strong></span><br>
-                        <span class="text-secondary">{{user_profile.user.profile.name}}</span>
-                    </div>
+                    <h2>{{user_profile.username}}</h2>
                     <div class="col-md-3 mt-3">
                         <button class="btn btn-sm btn-outline-primary">follow</button>
                     </div>
