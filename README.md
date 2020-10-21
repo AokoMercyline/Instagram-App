@@ -54,17 +54,17 @@ If user has no account, they click on `sign up` | User signs up | User is redire
 
 4. Create .env file and paste  the following :
 
--SECRET_KEY = '<Secret_key(any)>'
--DBNAME = 'instaclone'
--USER = '<Username>'
--PASSWORD = '<password>'
--DEBUG = True
+* SECRET_KEY = '<Secret_key(any)>'
+* DBNAME = 'instaclone'
+* USER = '<Username>'
+* PASSWORD = '<password>'
+* DEBUG = True
 5. Run initial Migration
--python3 manage.py makemigrations instagram
--python3 manage.py migrate
+* python3 manage.py makemigrations instagram
+* python3 manage.py migrate
 6. Run the app
--python3 manage.py runserver
--Open terminal on localhost:8000
+* python3 manage.py runserver
+* Open terminal on localhost:8000
 
 or run using the Markfile
 * make migrations
