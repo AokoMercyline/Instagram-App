@@ -1,5 +1,5 @@
-
 :joy:
+
 # Instagram-App
 A clone of the website for the popular photo app Instagram 
 
@@ -12,7 +12,7 @@ A clone of the website for the popular photo app Instagram
 This is an app that allows users to create their accounts,upload there profile,post any image with description, like post and comment on other people posts
 
 ## Project live site
-  This is the live .[ Click for the demo]
+  This is the live .[ Click for the demo](https://mercyinstag.herokuapp.com/)
  ![Image](static/images/instaclone.jpg)
     
 ## Features
@@ -34,6 +34,13 @@ If user has no account, they click on `sign up` | User signs up | User is redire
 | Homepage loads | Click `settings` icon | beside the profile user can change their password or logout | 
 | Homepage loads | User inputs in the search form and presses enter | Searched results show |
 | A list of users displays | Click `follow` button to follow | Reloaded to the homepage
+
+## KNOWN BUGS
+* Live link doesnt reload already posted images
+* Still working on comment section for the image,user cant cannot on post and like too
+* Follow section is not working
+* The app is still on development process
+
 
 ## Setup/Installation requirements
 1.Clone or download and unzip the repository from github,https://github.com/AokoMercyline/Instagram-App
