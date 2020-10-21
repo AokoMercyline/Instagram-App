@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic  import ListView,DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic  import ListView,DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
@@ -8,32 +8,40 @@ from django.contrib.auth.models import User
 
 
 
-# Create your views here.
-# def index(request):
-#     context = {
-#         'posts': Post.objects.all()
-#     }
-   
-#     return render(request, 'index.html', context)
-
 class PostListView(ListView):
+    # model = Comment
     model = Post
     template_name = 'index.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['-date_posted']
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        context.update({
+            'comments': Comment.objects.order_by('created_on'),
+            # 'more_context': Model.objects.all(),
+        })
+        return context
+
+    def get_queryset(self):
+        return Post.objects.order_by('-date_posted')
+    # def get_context_data(self, **kwargs):
+    #     context = super(ProjectView, self).get_context_data(**kwargs)
+    #     context['posts'] = Post.objects.all()
+    #     context['comments'] = Comment.objects.all()
+    #     return context
+    # def get_queryset(self):
+    #     """Return the last five published questions."""
+    #     # return Post.objects.all()
+    #     context = super(ProjectView, self).get_context_data(**kwargs)
+    #     context['posts'] = Post.objects.all()
+    #     context['comments'] = Comment.objects.all()
+    #     return context
 
 
 class PostDetailView(DetailView):
     model = Post
     
-    
-class PostComment(Comment):
-    model = Comment
-    fields = ['body']
-    
-    def form_valid(self,form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+
     
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -110,3 +118,43 @@ def post_detail(request, slug):
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
+    
+def comment(request,post_id):
+        current_user=request.user
+        post = Post.objects.get(id=post_id)
+        profile_owner = User.objects.get(username=current_user.username)
+        comments = Comment.objects.all()
+        
+        if request.method == 'POST':
+                form = CommentForm(request.POST, request.FILES)
+                if form.is_valid():
+                        comment = form.save(commit=False)
+                        comment.post = post
+                        comment.author = request.user
+                        comment.save()
+            
+                       
+                return redirect('instaclone-index')
+        else:
+                form = CommentForm()
+        return render(request, 'instaclone/comment.html',locals())
+        
+@login_required
+def like(request, post_id):
+    user = request.user
+    post = post.objects.get(id=post_id)
+    
+    liked = likes.objects.filter(user=user, post=post).count()
+    
+    if not liked:
+        like = likes.objects.Create(user=user, post=post)
+        current_likes = current_likes + 1
+    else:
+        Likes.objects.filter(user=user, post=post).delete()
+        current_likes = current_likes - 1
+        
+    post.like = current_likes
+    post.save()
+    
+    return HttpResponseRedirect(reverse('MainPage'))
+

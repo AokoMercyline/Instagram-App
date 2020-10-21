@@ -1,5 +1,6 @@
 
 {% extends "instaclone/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
     {% for post in posts %}
         <article class="media content-section">
@@ -14,16 +15,32 @@
             </div>
             <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
-            <p><img src="" alt=""><i class="fa fa-comment"  aria-hidden="true"> Comment</i>
-            <p><img src="" alt=""><i class="fa fa-heart" aria-hidden="true"> Like</i></p>
+            <p><a href="{% url 'comment' post.id %}" ><i class="fa fa-comment"  aria-hidden="true"> Comment</i></a>
+            <p><img src="" alt=""><i style="color: red;" class="fa fa-heart" aria-hidden="true"> Like</i></p>
             <div class="row">
-              <div class="col">
-                <form method="post" style="margin-top: 1.3em;">
-                  {% csrf_token %}
-                  <input type="text" placeholder="Write your comment here" name="Comment" id="">
-                  <button type="submit" class="btn btn-success  btn-sm">Submit</button> 
-                </form>
-              </div>
+             
+            <div class="col">
+              <div class="card-footer">
+                <h4>Comments:<span>
+                  {% if post.comments_set.all %}
+                            <p class=""> {{post.comments_set.all|length}} comments </p>
+                            {% else %}
+                            <p class="">0 comments </p>
+                            {% endif %}
+                </span></h4>
+                <div class="card-body ">
+                      <!-- <p class=""> {{comments|length}} comments </p> -->
+                      {% for comment in comments %}
+                      {% if comment.post_id == post.id%}
+                     
+                      <h5><strong>{{comment.author}}</strong> {{comment.comment}}</h5>
+                      <p>{{comment.created_on | timesince}}</p>
+                      <hr>
+
+                      {% endif %}
+                      {% endfor %}
+                  </div>
+            </div>
             </div>
           </div>
         </article>
