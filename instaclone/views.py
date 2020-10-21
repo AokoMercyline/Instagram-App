@@ -13,7 +13,7 @@ class PostListView(ListView):
     model = Post
     template_name = 'index.html'
     context_object_name = 'posts'
-    # ordering = ['-date_posted']
+   
     def get_context_data(self, **kwargs):
         context = super(PostListView, self).get_context_data(**kwargs)
         context.update({
@@ -24,18 +24,7 @@ class PostListView(ListView):
 
     def get_queryset(self):
         return Post.objects.order_by('-date_posted')
-    # def get_context_data(self, **kwargs):
-    #     context = super(ProjectView, self).get_context_data(**kwargs)
-    #     context['posts'] = Post.objects.all()
-    #     context['comments'] = Comment.objects.all()
-    #     return context
-    # def get_queryset(self):
-    #     """Return the last five published questions."""
-    #     # return Post.objects.all()
-    #     context = super(ProjectView, self).get_context_data(**kwargs)
-    #     context['posts'] = Post.objects.all()
-    #     context['comments'] = Comment.objects.all()
-    #     return context
+   
 
 
 class PostDetailView(DetailView):
