@@ -161,6 +161,7 @@ LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = 'instaclone-index'
 
+# changing user password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT =587

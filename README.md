@@ -33,7 +33,7 @@ If user has no account, they click on `sign up` | User signs up | User is redire
 | Homepage loads | Click `upload image` icon | User's redirected to a page where they can upload an image | 
 | Homepage loads | Click `settings` icon | beside the profile user can change their password or logout | 
 | Homepage loads | User inputs in the search form and presses enter | Searched results show |
-| A list of users displays | Click `follow` button to follow | Reloaded to the homepage
+| A list of users displays | Click `follow` button to follow(currently not working) | Reloaded to the homepage
 
 ## KNOWN BUGS
 * Live link doesnt reload already posted images
