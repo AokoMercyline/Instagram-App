@@ -14,10 +14,17 @@
             </div>
             <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.content }}</p>
-            <p><img src="" alt=""><i class="fa fa-comment" aria-hidden="true"> Comment</i>
+            <p><img src="" alt=""><i class="fa fa-comment"  aria-hidden="true"> Comment</i>
             <p><img src="" alt=""><i class="fa fa-heart" aria-hidden="true"> Like</i></p>
-           
-          
+            <div class="row">
+              <div class="col">
+                <form method="post" style="margin-top: 1.3em;">
+                  {% csrf_token %}
+                  <input type="text" placeholder="Write your comment here" name="Comment" id="">
+                  <button type="submit" class="btn btn-success  btn-sm">Submit</button> 
+                </form>
+              </div>
+            </div>
           </div>
         </article>
     {% endfor %}

@@ -23,18 +23,14 @@
             <p>Following: 0</p>
           </div>
           
-          <div class="row">
+          <!-- <div class="row">
             <div class="col">
-              <form method="post" style="margin-top: 1.3em;">
-                {% csrf_token %}
-                  {{ comment_form | crispy }}
-                  
-                  <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-         </form>
-        
-              
+              <form action="" method="POST" >
+                <input type="text" placeholder="Write your comment here" name="Comment" id="">
+                <button type="submit" class="btn btn-success  btn-sm">Submit</button>
+              </form>
             </div>
-          </div>
+          </div> -->
         </article>
     
 {% endblock content %}
