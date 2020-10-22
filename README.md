@@ -36,8 +36,7 @@ If user has no account, they click on `sign up` | User signs up | User is redire
 | A list of users displays | Click `follow` button to follow(currently not working) | Reloaded to the homepage
 
 ## KNOWN BUGS
-* Live link doesnt reload already posted images
-* Still working on comment section for the image,user cant cannot on post and like too
+
 * Follow section is not working
 * The app is still on development process
 
