@@ -1,12 +1,13 @@
 from django.urls import path
 # from django.conf.urls import url
-from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView, ProfileDetailView
 from . import views
 
 
 urlpatterns = [
     path('', PostListView.as_view(), name='instaclone-index'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    path('<pk>/', ProfileDetailView.as_view(), name='profile-detail-view'),
     path('post/new/', PostCreateView.as_view(), name='post-create'),
     path('<uuid:post_id>', views.post_detail, name='postdetail'),
     path('<uuid:post_id>/like', views.like, name='likePost'),

@@ -5,6 +5,7 @@ from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
 from django.contrib.auth.models import User
+from users.models import Profile
 
 
 
@@ -18,7 +19,8 @@ class PostListView(ListView):
         context = super(PostListView, self).get_context_data(**kwargs)
         context.update({
             'comments': Comment.objects.order_by('created_on'),
-            # 'more_context': Model.objects.all(),
+            'profiles': Profile.objects.all().exclude(user=self.request.user)
+            
         })
         return context
 
@@ -30,8 +32,26 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     
-
+class ProfileDetailView(DeleteView):
+    model = Profile
+    template_name = 'instaclone/detail.html'
     
+    def get_object(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        view_profile = Profile.objects.get(pk=pk)
+        return view_profile
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        view_profile = self.get_object()
+        my_profile = Profile.objects.get(user=self.request.user)
+        if view_profile.user in my_profile.following.all():
+            follow = True
+        else:
+            follow = False
+        context["follow"] = follow
+        return context
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content', 'image']

@@ -1,5 +1,5 @@
 body {
-    background: black;
+    /* background: black; */
     color: black;
     margin-top: 5rem;
   }
@@ -58,13 +58,20 @@ body {
     vertical-align: middle;
   }
 
-  
   .account-img {
     height: 125px;
     width: 125px;
     margin-right: 20px;
     margin-bottom: 16px;
   }
+
   .account-heading {
     font-size: 2.5rem;
+  }
+
+  .profile-content{
+    /* display: flex; */
+    display: none;
+    flex-wrap: nowrap;
+    flex-direction: row;
   }

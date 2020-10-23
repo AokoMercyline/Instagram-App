@@ -1,0 +1,52 @@
+{% extends "instaclone/base.html" %}
+{% load crispy_forms_tags %} 
+{% block content %}
+<!-- modal -->
+<div class="ui basic modal">
+  <div class="ui icon header">
+    <i class="user plus icon"></i>
+    Are sure you want to follow{{object}}?
+  </div>
+  <div class="content">
+    <p>By clicking yes you will see all the posts published by {{object}}</p>
+  </div>
+  <div class="actions">
+    <form action="" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="profile_pk" value="{{object.pk}}" />
+      <button type="submit" class="ui green ok massive button">
+        <i class="checkmark icon"></i>
+        Yes
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="content-section">
+  {{follow}}
+  <div class="row">
+    <div class="col-md-3">
+      {{object.image.url}}
+      <hr />
+      {% if follow %}
+      <form action="" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="profile_pk" value="{{object.pk}}" />
+        <button type="submit" class="btn btn-danger">unfollow</button>
+      </form>
+      {% else %}
+      <button type="submit" id="follow-btn" class="btn btn-success">
+        follow
+      </button>
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      {% for post in object.profiles_posts %}
+      <div class="images">
+        <img src="{{ post.image.url }}" alt="" />
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
