@@ -6,8 +6,24 @@ from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
 from django.contrib.auth.models import User
 from users.models import Profile
+from itertools import chain
 
 
+def follow_unfollow_profile(request):
+    if request.method == 'POST':
+        my_profile = Profile.objects.get(user=request.user)
+        pk = request.POST.get('profile_pk')
+        obj = Profile.objects.get(pk=pk)
+        
+        if obj.user in my_profile.following.all():
+            my_profile.following.remove(obj.user)
+            
+        else:
+            my_profile.following.add(obj.user)
+        return redirect(request.META.get('HTTP_REFERER'))
+    return redirect('instaclone-index')
+            
+            
 
 class PostListView(ListView):
     # model = Comment
@@ -27,7 +43,25 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.order_by('-date_posted')
    
-
+def posts_of_following_profiles(request):
+    
+    comments = Comment.objects.order_by('created_on'),
+    profiles = Profile.objects.all().exclude(user=request.user)
+    
+    profile = Profile.objects.get(user=request.user)
+    users = [user for user in profile.following.all()]
+    posts = []
+    qs = None
+    for u in users:
+        p = Profile.objects.all().filter(user=u)
+        p_posts = Post.objects.all().filter(author__id__in=p)
+        posts.append(p_posts)
+    my_post = profile.profiles_posts()
+    posts.append(my_post)
+    if len(posts)>0:
+        qs = sorted(chain(*posts), reverse=True, key=lambda obj: obj.date_posted)
+    
+    return render(request, 'index.html', {'posts':qs, 'comments':comments, 'profiles':profiles, 'profile':profile})
 
 class PostDetailView(DetailView):
     model = Post
@@ -45,11 +79,14 @@ class ProfileDetailView(DeleteView):
         context = super().get_context_data(**kwargs)
         view_profile = self.get_object()
         my_profile = Profile.objects.get(user=self.request.user)
+        # posts = Post.objects.get(author__id__in=view_profile)
         if view_profile.user in my_profile.following.all():
             follow = True
         else:
             follow = False
         context["follow"] = follow
+        # context['posts'] = posts
+        # context["post"] = Post.objects.filter(pk=pk)
         return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -57,7 +94,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     fields = ['title', 'content', 'image']
 
     def form_valid(self,form):
-        form.instance.author = self.request.user
+        # self.object = form.save(commit=False)
+        form.instance.author = self.request.user.profile
+        # self.object.save()
         return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -85,11 +124,11 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
     
     
-def register(request):
-    return render(request, 'users/register.html')
+# def register(request):
+#     return render(request, 'users/register.html')
 
-def register(request):
-    return render(request, 'users/login.html')
+# def register(request):
+#     return render(request, 'users/login.html')
 
 @login_required(login_url='/accounts/login/')
 def search_results(request):
@@ -132,8 +171,10 @@ def comment(request,post_id):
         current_user=request.user
         post = Post.objects.get(id=post_id)
         profile_owner = User.objects.get(username=current_user.username)
-        comments = Comment.objects.all()
-        
+        comments = Comment.objects.filter(post=post)
+        for comm  in comments:
+            print(comm.comment)
+            print(comm.author)
         if request.method == 'POST':
                 form = CommentForm(request.POST, request.FILES)
                 if form.is_valid():
@@ -141,8 +182,6 @@ def comment(request,post_id):
                         comment.post = post
                         comment.author = request.user
                         comment.save()
-            
-                       
                 return redirect('instaclone-index')
         else:
                 form = CommentForm()

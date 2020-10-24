@@ -161,7 +161,7 @@ LOGIN_REDIRECT_URL='instaclone-index'
 
 LOGIN_URL = 'login'
 
-LOGOUT_REDIRECT_URL = 'instaclone-index'
+LOGOUT_REDIRECT_URL = 'login/'
 
 # changing user password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

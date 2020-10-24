@@ -2,19 +2,19 @@
 {% load crispy_forms_tags %} 
 {% block content %}
 <!-- modal -->
-<div class="ui basic modal">
-  <div class="ui icon header">
+<div class="ui basic modal"  style="top: 400px; height: 400px;">
+  <div class="ui icon header text-light" >
     <i class="user plus icon"></i>
-    Are sure you want to follow{{object}}?
+     Are sure you want to follow{{object}}?
   </div>
   <div class="content">
-    <p>By clicking yes you will see all the posts published by {{object}}</p>
+    <p style="color: white;">By clicking yes you will see all the posts published by {{object}}</p>
   </div>
   <div class="actions">
-    <form action="" method="post">
+    <form action="{% url 'follow-unfollow-view' %}" method="post">
       {% csrf_token %}
       <input type="hidden" name="profile_pk" value="{{object.pk}}" />
-      <button type="submit" class="ui green ok massive button">
+      <button type="submit" class="btn btn-success button">
         <i class="checkmark icon"></i>
         Yes
       </button>
@@ -23,13 +23,14 @@
 </div>
 
 <div class="content-section">
-  {{follow}}
+  <!-- {{follow}} -->
   <div class="row">
     <div class="col-md-3">
-      {{object.image.url}}
+        <img class="rounded-circle article-img" src="{{object.image.url}}" alt="">
+        <div><p class="btn btn-warning">{{object.user}}</p></div>
       <hr />
       {% if follow %}
-      <form action="" method="post">
+      <form action="{% url 'follow-unfollow-view' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="profile_pk" value="{{object.pk}}" />
         <button type="submit" class="btn btn-danger">unfollow</button>
@@ -40,13 +41,31 @@
       </button>
       {% endif %}
     </div>
-    <div class="col-md-6">
-      {% for post in object.profiles_posts %}
-      <div class="images">
-        <img src="{{ post.image.url }}" alt="" />
+    <div class="col-md-9">
+      <div class="container">
+        <div class="row">
+          {% for post in object.profiles_posts %}
+          <div class="col-md-3">
+            <div class="images">
+              <img class="" src="{{post.image.url}}" alt="" width="100%" height="200px">
+            </div>
+          </div>
+          {% endfor %}
+        </div>
       </div>
-      {% endfor %}
     </div>
   </div>
+
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('#follow-btn').click(function(){
+            $('.ui.basic.modal')
+            .modal('show')
+        })
+    })
+</script>
+{% endblock scripts %}

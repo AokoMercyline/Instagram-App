@@ -4,14 +4,14 @@
 {% block content %}
   <div class="container-fluid">
     <div class="row">
-      <div class="col">
+      <div class="col-md-12">
         {% for profile in profiles %}
-          <div class="profile-content">
+          <div class="profile-content" style="display: flex; flex-direction:row;">
             <div class="image-top">
               <img class="rounded-circle article-img" src="{{ profile.image.url}}" alt="">
             </div>
             <div class="image-bottom">
-              <div class="name">
+              <div class="name text-light">
                 {{profile.user.username}}
                 
               </div>
@@ -29,7 +29,7 @@
     {% for post in posts %}
     
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url}}" alt="">
+          <img class="rounded-circle article-img" src="{{ post.author.image.url}}" alt="">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ post.author }}</a>
@@ -42,6 +42,15 @@
             <p class="article-content">{{ post.content }}</p>
             <p><a href="{% url 'comment' post.id %}" ><i class="fa fa-comment"  aria-hidden="true"> Comment</i></a>
             <p><img src="" alt=""><i style="color: red;" class="fa fa-heart" aria-hidden="true"> Like</i></p>
+            {% for com in comments %}
+                    
+                     
+            <h5><strong>{{com.author}}</strong> {{com.comment}}</h5>
+            <p>{{com.created_on | timesince}}</p>
+            <hr>
+
+            
+            {% endfor %}
             <div class="row">
              
             <div class="col">
@@ -53,16 +62,16 @@
                             <p class="">0 comments </p>
                             {% endif %}
                 </span></h4>
-                <div class="card-body ">
+                <div class="card-body " style="background-color: black; color: blue;">
                       <!-- <p class=""> {{comments|length}} comments </p> -->
-                      {% for comment in comments %}
-                      {% if comment.post_id == post.id%}
+                      {% for com in comments %}
+                    
                      
-                      <h5><strong>{{comment.author}}</strong> {{comment.comment}}</h5>
-                      <p>{{comment.created_on | timesince}}</p>
+                      <h5><strong>{{com.author}}</strong> {{com.comment}}</h5>
+                      <p>{{com.created_on | timesince}}</p>
                       <hr>
 
-                      {% endif %}
+                      
                       {% endfor %}
                   </div>
             </div>
@@ -71,6 +80,18 @@
         </article>
     {% endfor %}
 {% endblock content %}
-
-
+{% block mydata%}
+<div class="col-md-4">
+  <div class="content-section bg-dark">
+    <h3 class="text-light">People you are following</h3>
+    <p class='text'>
+      <ul class="list-group ">
+        {% for p in profile.following.all %}
+        <li class="list-group-item list-group-item text-center bg-su">{{p}}</li>
+        {% endfor  %}
+      </ul>
+    </p>
+  </div>
+</div>
+{% endblock %}
 

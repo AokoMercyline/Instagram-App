@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from instaclone.models import Post
+# from instaclone.models import Post
 
 
 
@@ -25,7 +25,7 @@ class Profile(models.Model):
     class Meta:
         ordering = ('-created',)
 
-def save(self):
+def save(self, **kwargs):
     #save method for images
     super().save()
     
