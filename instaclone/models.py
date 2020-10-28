@@ -9,21 +9,37 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
-  
     image = models.ImageField(upload_to='images/')
-    like = models.IntegerField(default=0)
+    liked = models.ManyToManyField(User, default=None, blank=True , related_name='liked')
     
-                              
+    def save_post(self):
+        self.save()
+
+    def delete_post(self):
+        self.delete()                         
     def __str__(self):
         return self.title
 
     # returns url for post
     def get_absolute_url(self):
         return reverse('post-detail', kwargs={'pk': self.pk})
+    
+    @property
+    def num_likes(self):
+        return self.liked.all.count()
+    
+LIKE_CHOICES = (
+    ('Like', 'Like'),
+    ('Unlike', 'Unlike'),
+)
+    
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,  on_delete=models.CASCADE)
+    value = models.CharField(choices=LIKE_CHOICES, default='LIKE', max_length=10)
 
-class Likes(models.Model):
-    user =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
-    post =  models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_like')
+    def __str__(self):
+        return str(self.post)
     
 class Comment(models.Model):
     comment = models.TextField(null=True)

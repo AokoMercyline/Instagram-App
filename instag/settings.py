@@ -39,6 +39,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 # Application definition
 
 INSTALLED_APPS = [
+    
+    'corsheaders',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,6 +54,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -176,3 +180,7 @@ EMAIL_HOST_PASSWORD ='0708434156mercy'
 django_heroku.settings(locals())
 
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
+]

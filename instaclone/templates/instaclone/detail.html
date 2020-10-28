@@ -30,7 +30,7 @@
         <div><p class="btn btn-warning">{{object.user}}</p></div>
       <hr />
       {% if follow %}
-      <form action="{% url 'follow-unfollow-view' %}" method="post">
+      <form  action="{% url 'follow-unfollow-view' %}" method="post">
         {% csrf_token %}
         <input type="hidden" name="profile_pk" value="{{object.pk}}" />
         <button type="submit" class="btn btn-danger">unfollow</button>

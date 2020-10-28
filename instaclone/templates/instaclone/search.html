@@ -23,9 +23,14 @@
                         <img src="{{ user_profile.profile.image.url}}" alt=""
                              class="rounded-circle border ml-3 mt-2  mr-3" width="55" height="55">
                     </div>
-                    <h2>{{user_profile.username}}</h2>
+                    <div>
+                        <h2>{{user_profile.username}}</h2>
+                    </div>
+                    
                     <div class="col-md-3 mt-3">
-                        <button class="btn btn-sm btn-outline-primary">follow</button>
+                        <a href="{% url 'profile-detail-view' user_profile.profile.pk %}">
+                            <button class="btn btn-primary">See profile</button>
+                          </a>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic  import ListView,DetailView, CreateView, UpdateView, DeleteView, View
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
 from django.contrib.auth.models import User
 from users.models import Profile
 from itertools import chain
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 def follow_unfollow_profile(request):
     if request.method == 'POST':
@@ -42,9 +43,10 @@ class PostListView(ListView):
 
     def get_queryset(self):
         return Post.objects.order_by('-date_posted')
-   
-def posts_of_following_profiles(request):
     
+@login_required(login_url='/login/') 
+def posts_of_following_profiles(request):
+    user = request.user
     comments = Comment.objects.order_by('created_on'),
     profiles = Profile.objects.all().exclude(user=request.user)
     
@@ -61,7 +63,7 @@ def posts_of_following_profiles(request):
     if len(posts)>0:
         qs = sorted(chain(*posts), reverse=True, key=lambda obj: obj.date_posted)
     
-    return render(request, 'index.html', {'posts':qs, 'comments':comments, 'profiles':profiles, 'profile':profile})
+    return render(request, 'index.html', {'posts':qs, 'comments':comments, 'profiles':profiles, 'profile':profile, 'user':user})
 
 class PostDetailView(DetailView):
     model = Post
@@ -124,11 +126,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
     
     
-# def register(request):
-#     return render(request, 'users/register.html')
 
-# def register(request):
-#     return render(request, 'users/login.html')
 
 @login_required(login_url='/accounts/login/')
 def search_results(request):
@@ -185,24 +183,53 @@ def comment(request,post_id):
                 return redirect('instaclone-index')
         else:
                 form = CommentForm()
+ 
         return render(request, 'instaclone/comment.html',locals())
+   
+   
+   
+@csrf_exempt
+def like_post(request, post_id):
+    user = User.objects.get(pk=request.POST['user_id'])
+    # import pdb; pdb.set_trace()
+    if request.method == 'POST':
+        post_id = request.POST.get('post_id')
+        post_obj = Post.objects.get(id=post_id)
         
-@login_required
-def like(request, post_id):
-    user = request.user
-    post = post.objects.get(id=post_id)
-    
-    liked = likes.objects.filter(user=user, post=post).count()
-    
-    if not liked:
-        like = likes.objects.Create(user=user, post=post)
-        current_likes = current_likes + 1
-    else:
-        Likes.objects.filter(user=user, post=post).delete()
-        current_likes = current_likes - 1
+        if user in post_obj.liked.all():
+            post_obj.liked.remove(user)
+        else:
+            post_obj.liked.add(user)
+            
+        like, created = Like.objects.get_or_create(user=user, post_id=post_id)
         
-    post.like = current_likes
-    post.save()
+        if not created:
+            if like.value == 'Like':
+                like.value = 'Unlike'
+            else:
+                like.value = 'Like'
+                
+                    
+        like.save()       
     
-    return HttpResponseRedirect(reverse('MainPage'))
+    return JsonResponse({"likes":len(post_obj.liked.all())})
+        
+# @login_required
+# def like(request, post_id):
+#     user = request.user
+#     post = post.objects.get(id=post_id)
+    
+#     liked = likes.objects.filter(user=user, post=post).count()
+    
+#     if not liked:
+#         like = likes.objects.Create(user=user, post=post)
+#         current_likes = current_likes + 1
+#     else:
+#         Likes.objects.filter(user=user, post=post).delete()
+#         current_likes = current_likes - 1
+        
+#     post.like = current_likes
+#     post.save()
+    
+#     return HttpResponseRedirect(reverse('MainPage'))
 

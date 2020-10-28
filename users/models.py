@@ -13,12 +13,16 @@ class Profile(models.Model):
     following = models.ManyToManyField(User, related_name='following', blank=True, symmetrical=False)
     created = models.DateTimeField(auto_now_add=True)
     
-    
+
     def profiles_posts(self):
         return self.post_set.all()
     
+    def save_profile(self):
+        self.save()
 
-
+    def delete_profile(self):
+        self.delete()
+        
     def __str__(self):
         return f'{self.user} Profile'
 
