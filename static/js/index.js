@@ -25,7 +25,7 @@ const ajaxLike = (postID,type) =>{
         const button = $(`#button${postID}`)
         const prevVal = parseInt(likeCount.text())
         likeCount.text(data.likes)
-        if (prevVal > data.likes){
+        if (prevVal < data.likes){
             button.removeClass().addClass("btn btn-danger")
             button.html('Unlike')
         }else{
