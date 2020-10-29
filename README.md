@@ -19,6 +19,7 @@ This is an app that allows users to create their accounts,upload there profile,p
 * User can register and  log in to application using their own and unique credentials  and view other peoples posts.
 * A user can like and comment on a post.
 * A user can upload posts and edit their profile.
+* A user can view profiles of people they follow.
 * Admin can regulate images uploaded by deleting from the admin dashboard as well as completely close a users account.
 
 
